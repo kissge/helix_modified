@@ -1,5 +1,7 @@
 # Helix: modified
 
+![Layout](keyboards/helix/rev2/keymaps/default/layout.png)
+
 ## Setup
 
 ### Windows 10
@@ -14,5 +16,5 @@ Run `sudo util/install_dependencies.sh` on Bash on Windows, which was suggested 
 ## Build
 
 ```sh
-make helix:default
+make
 ```
