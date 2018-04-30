@@ -37,6 +37,8 @@ enum custom_keycodes {
   PREV,
   CLOSE,
   REOPEN,
+  FORWARD,
+  BACK,
 };
 
 enum macro_keycodes {
@@ -63,7 +65,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
    * | Shift|   Z  |   X  |   C  |   V  |   B  |   -  |   =  |   B  |   N  |   M  |   ,  |   .  |   /  |
    * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
-   * |PageUp|PageDn| GUI  | Alt  |   `  |   '  |Space |Enter |Raise | Home | End  |   [  |   ]  |   \  |
+   * |PageUp|PageDn| GUI  | Alt  |Space |   '  |   `  |Enter |Raise | Home | End  |   [  |   ]  |   \  |
    * `-------------------------------------------------------------------------------------------------'
    */
   [_QWERTY] = KEYMAP( \
@@ -71,28 +73,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, \
       KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, \
       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS, KC_EQL,  KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, \
-      KC_PGUP, KC_PGDN, KC_LGUI, KC_LALT, KC_GRV,  KC_QUOT, KC_SPC,  KC_ENT,  RAISE,   KC_HOME, KC_END,  KC_LBRC, KC_RBRC, KC_BSLS \
+      KC_PGUP, KC_PGDN, KC_LGUI, KC_LALT, KC_SPC,  KC_QUOT, KC_GRV,  KC_ENT,  RAISE,   KC_HOME, KC_END,  KC_LBRC, KC_RBRC, KC_BSLS \
       ),
 
   /* Raise
    * ,-----------------------------------------.             ,-----------------------------------------.
    * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |             |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |      |  Up  |      |      |      |             | Next |Close |PrtScr|      |      |  Del |
+   * |      |      |  Up  |      |      |  Fwd |             | Next |Close |PrtScr|      |      |  Del |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      | Left | Down |Right |      |      |             | Prev |Reopen|      |      |      |      |
+   * |      | Left | Down |Right |      | Back |             | Prev |Reopen|      |      |      |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
    * |      | Mute | Vol- | Vol+ |      |      |      |      |      |      |      |      |      |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
-   * |      |  IME |      |      |      |      |      |      |      |      |      |      |      |      |
+   * |      |      |      |      |  IME |      |      |      |      |      |      |      |      |      |
    * `-------------------------------------------------------------------------------------------------'
    */
   [_RAISE] = KEYMAP( \
       KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-      _______, _______, KC_UP,   _______, _______, _______,                   NEXT,    CLOSE,   KC_PSCR, KC_9,    _______, KC_DEL, \
-      _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,                   PREV,    REOPEN,  _______, _______, _______, _______, \
+      _______, _______, KC_UP,   _______, _______, FORWARD,                   NEXT,    CLOSE,   KC_PSCR, KC_9,    _______, KC_DEL, \
+      _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, BACK,                      PREV,    REOPEN,  _______, _______, _______, _______, \
       _______, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-      _______, IME    , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, AG_NORM \
+      _______, _______, _______, _______, IME    , _______, _______, _______, _______, _______, _______, _______, _______, _______ \
       )
 };
 #else
@@ -151,6 +153,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case REOPEN:
       if (record->event.pressed) {
         SEND_STRING(SS_LCTRL("T"));
+      }
+      return false;
+    case FORWARD:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT(SS_TAP(X_RIGHT)));
+      }
+      return false;
+    case BACK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LALT(SS_TAP(X_LEFT)));
       }
       return false;
   }
