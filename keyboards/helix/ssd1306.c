@@ -192,29 +192,10 @@ done:
 void matrix_write_char_inner(struct CharacterMatrix *matrix, uint8_t c) {
   *matrix->cursor = c;
   ++matrix->cursor;
-
-  if (matrix->cursor - &matrix->display[0][0] == sizeof(matrix->display)) {
-    // We went off the end; scroll the display upwards by one line
-    memmove(&matrix->display[0], &matrix->display[1],
-            MatrixCols * (MatrixRows - 1));
-    matrix->cursor = &matrix->display[MatrixRows - 1][0];
-    memset(matrix->cursor, ' ', MatrixCols);
-  }
 }
 
 void matrix_write_char(struct CharacterMatrix *matrix, uint8_t c) {
   matrix->dirty = true;
-
-  if (c == '\n') {
-    // Clear to end of line from the cursor and then move to the
-    // start of the next line
-    uint8_t cursor_col = (matrix->cursor - &matrix->display[0][0]) % MatrixCols;
-
-    while (cursor_col++ < MatrixCols) {
-      matrix_write_char_inner(matrix, ' ');
-    }
-    return;
-  }
 
   matrix_write_char_inner(matrix, c);
 }
