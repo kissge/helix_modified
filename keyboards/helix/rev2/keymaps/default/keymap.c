@@ -230,11 +230,11 @@ void render_rocket(struct CharacterMatrix *matrix) {
   static unsigned tick = 0;
   char logo[85] = {0};
 
-  tick += (layer_state == L_BASE) ? 1 : 10;
+  tick += (layer_state == L_BASE) ? 1 : 4;
 
   for (int i = 0; i < 84; ++i)
   {
-    logo[i] = 0x21 + i + (((tick / 128) % 2) ? 84 : 0);
+    logo[i] = 0x21 + i + (((tick >> 5) % 2) ? 84 : 0);
   }
 
   matrix_write(matrix, logo);
