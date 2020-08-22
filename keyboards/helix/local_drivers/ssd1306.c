@@ -19,6 +19,9 @@
 #include "sendchar.h"
 #include "timer.h"
 
+// https://github.com/qmk/qmk_firmware/issues/9147
+struct CharacterMatrix display;
+
 // Set this to 1 to help diagnose early startup problems
 // when testing power-on with ble.  Turn it off otherwise,
 // as the latency of printing most of the debug info messes

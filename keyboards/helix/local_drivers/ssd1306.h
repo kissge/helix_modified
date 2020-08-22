@@ -67,7 +67,8 @@ struct CharacterMatrix {
   bool dirty;
 };
 
-struct CharacterMatrix display;
+// https://github.com/qmk/qmk_firmware/issues/9147
+extern struct CharacterMatrix display;
 
 bool iota_gfx_init(bool rotate);
 void iota_gfx_task(void);
